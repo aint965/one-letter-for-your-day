@@ -19,8 +19,12 @@ const LETTER = "K";
 // The output path. OUTPUT_DIR is honoured as a directory (entry.txt is
 // written inside it) or as a full file path when it ends in ".txt".
 // Default: /output/entry.txt, per the competition rules.
+// A blank OUTPUT_DIR (set but empty or whitespace-only) falls back to the
+// default: without this, join("", "entry.txt") would resolve to the
+// relative path "entry.txt" and the entry would land in the working
+// directory instead of the output directory.
 function resolveOutputPath(): string {
-  const raw = process.env.OUTPUT_DIR ?? "/output/entry.txt";
+  const raw = (process.env.OUTPUT_DIR ?? "").trim() || "/output/entry.txt";
   if (raw.endsWith(".txt")) {
     return raw;
   }
